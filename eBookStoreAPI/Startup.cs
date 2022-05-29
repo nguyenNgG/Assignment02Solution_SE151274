@@ -28,7 +28,7 @@ namespace eBookStoreAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<eBookStoreDbContext>(options => options.UseSqlServer("server=(local);database=eBookStoreDB;uid=sa;pwd=1234567890;"));
+            services.AddDbContext<eBookStoreDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("eBookStore")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "eBookStoreAPI", Version = "v1" });
