@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BusinessObject
@@ -33,6 +34,7 @@ namespace BusinessObject
         public string Country { get; set; }
 
         public ICollection<Book> Books { get; set; }
+
         public ICollection<User> Users { get; set; }
 
     }

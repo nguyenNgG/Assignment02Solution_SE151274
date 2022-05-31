@@ -12,8 +12,7 @@ namespace BusinessObject
     public class eBookStoreDbContext : DbContext
     {
 
-        public eBookStoreDbContext(DbContextOptions<eBookStoreDbContext> options)
-        : base(options)
+        public eBookStoreDbContext()
         {
         }
 
