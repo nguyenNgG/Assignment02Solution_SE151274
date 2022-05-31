@@ -11,8 +11,7 @@ namespace BusinessObject.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    author_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    author_id = table.Column<int>(type: "int", nullable: false),
                     last_name = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     first_name = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     phone = table.Column<string>(type: "varchar(20)", nullable: true),
@@ -31,8 +30,7 @@ namespace BusinessObject.Migrations
                 name: "Publishers",
                 columns: table => new
                 {
-                    publisher_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    publisher_id = table.Column<int>(type: "int", nullable: false),
                     publisher_name = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     city = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     state = table.Column<string>(type: "nvarchar(100)", nullable: true),
@@ -47,8 +45,7 @@ namespace BusinessObject.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    role_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    role_id = table.Column<int>(type: "int", nullable: false),
                     role_desc = table.Column<string>(type: "nvarchar(200)", nullable: true)
                 },
                 constraints: table =>
@@ -60,8 +57,7 @@ namespace BusinessObject.Migrations
                 name: "Books",
                 columns: table => new
                 {
-                    book_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    book_id = table.Column<int>(type: "int", nullable: false),
                     title = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     type = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     publisher_id = table.Column<int>(type: "int", nullable: false),
@@ -87,8 +83,7 @@ namespace BusinessObject.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    user_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<int>(type: "int", nullable: false),
                     email_address = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     password = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     source = table.Column<string>(type: "nvarchar(200)", nullable: true),
