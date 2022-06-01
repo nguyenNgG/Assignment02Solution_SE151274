@@ -1,16 +1,20 @@
 ﻿using BusinessObject;
 using DataAccess.Repositories.Interfaces;
+using eBookStoreAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eBookStoreAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
+    [ODataAttributeRouting]
     public class BooksController : ODataController
     {
         IBookRepository repository;
@@ -27,10 +31,10 @@ namespace eBookStoreAPI.Controllers
         }
 
         [EnableQuery]
-        [HttpGet("id")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        [HttpGet("{key}")]
+        public async Task<ActionResult<Book>> GetBook([FromODataUri] int key)
         {
-            return await repository.GetBook(id);
+            return await repository.GetBook(key);
         }
 
         [HttpPost]
@@ -39,5 +43,14 @@ namespace eBookStoreAPI.Controllers
             await repository.AddBook(book);
             return Created(book);
         }
+
+        [EnableQuery]
+        [HttpPost("odata/login")]
+        public async Task<ActionResult<Book>> PostLogin([FromBody]LoginForm loginForm)
+        {
+            var pwd = loginForm.Password;
+            return Ok();
+        }
     }
+
 }
