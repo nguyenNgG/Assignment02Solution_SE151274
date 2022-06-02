@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace eBookStoreAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class BooksController : ODataController
     {
         IBookRepository repository;
@@ -27,43 +28,83 @@ namespace eBookStoreAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Book>>> Get()
         {
-            return await repository.GetList();
+            var list = await repository.GetList();
+            if (list == null)
+            {
+                return NotFound();
+            }
+            return Ok(list);
         }
 
         [EnableQuery]
         [HttpGet("{key}")]
         public async Task<ActionResult<Book>> GetBook([FromODataUri] int key)
         {
-            return await repository.Get(key);
+            var obj = await repository.Get(key);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return Ok(obj);
         }
 
         [HttpPost]
         public async Task<ActionResult<Book>> Post(Book book)
         {
-            await repository.Add(book);
-            return Created(book);
+            try
+            {
+                await repository.Add(book);
+                return Created(book);
+            }
+            catch (DbUpdateException)
+            {
+                if (await repository.Get(book.BookId) != null)
+                {
+                    return Conflict();
+                }
+                return BadRequest();
+            }
         }
 
         [HttpPut("{key}")]
         public async Task<ActionResult<Book>> Put(int key, Book book)
         {
-            var _book = new Book
+            if (key != book.BookId)
             {
-                PublishedDate = new System.DateTime(book.PublishedDate.Ticks, System.DateTimeKind.Utc)
-            };
-            string v = JsonSerializer.Serialize(_book);
-            await repository.Update(book);
-            return Ok(book);
+                return BadRequest();
+            }
+
+            try
+            {
+                await repository.Update(book);
+                return Ok(book);
+            }
+            catch (DbUpdateException)
+            {
+                if (await repository.Get(book.BookId) == null)
+                {
+                    return NotFound();
+                }
+                return BadRequest();
+            }
         }
 
-        [EnableQuery]
-        [HttpPost("login")]
-        public async Task<ActionResult<Book>> Login([FromBody]LoginForm loginForm)
+        [HttpDelete("{key}")]
+        public async Task<ActionResult<Book>> Put(int key)
         {
-            await repository.GetList();
-            var pwd = loginForm.Password;
-            return Ok();
+            try
+            {
+                await repository.Delete(key);
+                return NoContent();
+            }
+            catch (DbUpdateException)
+            {
+                if (await repository.Get(key) == null)
+                {
+                    return NotFound();
+                }
+                return BadRequest();
+            }
         }
     }
-
 }
