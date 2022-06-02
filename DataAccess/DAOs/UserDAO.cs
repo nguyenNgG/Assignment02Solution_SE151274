@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DAOs
 {
-    internal class BookDAO
+    internal class UserDAO
     {
-        private static BookDAO instance = null;
+        private static UserDAO instance = null;
         private static readonly object instanceLock = new object();
-        private BookDAO() { }
+        private UserDAO() { }
 
-        public static BookDAO Instance
+        public static UserDAO Instance
         {
             get
             {
@@ -22,48 +22,48 @@ namespace DataAccess.DAOs
                 {
                     if (instance == null)
                     {
-                        instance = new BookDAO();
+                        instance = new UserDAO();
                     }
                     return instance;
                 }
             }
         }
 
-        public async Task<List<Book>> GetList()
+        public async Task<List<User>> GetList()
         {
             var db = new eBookStoreDbContext();
-            List<Book> books = null;
-            books = await db.Books.Include(x => x.Publisher).Include(x => x.BookAuthors).ThenInclude(x => x.Author).ToListAsync();
-            return books;
+            List<User> list = null;
+            list = await db.Users.Include(x => x.Role).Include(x => x.Publisher).ToListAsync();
+            return list;
         }
 
-        public async Task<Book> Get(int id)
+        public async Task<User> Get(int id)
         {
             var db = new eBookStoreDbContext();
-            Book book = await db.Books.Include(x => x.Publisher).Include(x => x.BookAuthors).ThenInclude(x => x.Author).FirstOrDefaultAsync(x => x.BookId == id);
-            return book;
+            User obj = await db.Users.Include(x => x.Role).Include(x => x.Publisher).FirstOrDefaultAsync(x => x.UserId == id);
+            return obj;
         }
 
-        public async Task Add(Book book)
+        public async Task Add(User obj)
         {
             var db = new eBookStoreDbContext();
-            db.Books.Add(book);
+            db.Users.Add(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Update(Book book)
+        public async Task Update(User obj)
         {
             var db = new eBookStoreDbContext();
-            db.Books.Update(book);
+            db.Users.Update(obj);
             await db.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
             var db = new eBookStoreDbContext();
-            Book book = new Book { BookId = id };
-            db.Books.Attach(book);
-            db.Books.Remove(book);
+            User obj = new User { UserId = id };
+            db.Users.Attach(obj);
+            db.Users.Remove(obj);
             await db.SaveChangesAsync();
         }
     }

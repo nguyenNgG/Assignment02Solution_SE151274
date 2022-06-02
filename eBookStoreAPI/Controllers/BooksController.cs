@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace eBookStoreAPI.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-    [ODataAttributeRouting]
+    [ApiController]
+    [Route("api/[controller]")]
     public class BooksController : ODataController
     {
         IBookRepository repository;
@@ -27,27 +27,40 @@ namespace eBookStoreAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Book>>> Get()
         {
-            return await repository.GetBooks(null);
+            return await repository.GetList();
         }
 
         [EnableQuery]
         [HttpGet("{key}")]
         public async Task<ActionResult<Book>> GetBook([FromODataUri] int key)
         {
-            return await repository.GetBook(key);
+            return await repository.Get(key);
         }
 
         [HttpPost]
         public async Task<ActionResult<Book>> Post(Book book)
         {
-            await repository.AddBook(book);
+            await repository.Add(book);
             return Created(book);
         }
 
-        [EnableQuery]
-        [HttpPost("odata/login")]
-        public async Task<ActionResult<Book>> PostLogin([FromBody]LoginForm loginForm)
+        [HttpPut("{key}")]
+        public async Task<ActionResult<Book>> Put(int key, Book book)
         {
+            var _book = new Book
+            {
+                PublishedDate = new System.DateTime(book.PublishedDate.Ticks, System.DateTimeKind.Utc)
+            };
+            string v = JsonSerializer.Serialize(_book);
+            await repository.Update(book);
+            return Ok(book);
+        }
+
+        [EnableQuery]
+        [HttpPost("login")]
+        public async Task<ActionResult<Book>> Login([FromBody]LoginForm loginForm)
+        {
+            await repository.GetList();
             var pwd = loginForm.Password;
             return Ok();
         }

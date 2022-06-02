@@ -11,10 +11,10 @@ namespace DataAccess.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        public Task<Book> GetBook(int id) => BookDAO.Instance.GetBook(id);
-        public Task<List<Book>> GetBooks(string query) => BookDAO.Instance.GetBooks(query);
-        public Task AddBook(Book book) => BookDAO.Instance.AddBook(book);
-        public Task UpdateBook(Book book) => BookDAO.Instance.UpdateBook(book);
-        public Task DeleteBook(int id) => BookDAO.Instance.DeleteBook(id);
+        public Task<Book> Get(int id) => BookDAO.Instance.Get(id);
+        public Task<List<Book>> GetList() => BookDAO.Instance.GetList();
+        public Task Add(Book obj) => BookDAO.Instance.Add(obj);
+        public Task Update(Book obj) => BookDAO.Instance.Update(obj);
+        public Task Delete(int id) => BookDAO.Instance.Delete(id);
     }
 }
