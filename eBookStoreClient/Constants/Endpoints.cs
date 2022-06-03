@@ -11,5 +11,7 @@
         public static string Current = $"{BaseUri}/Users/current";
         public static string Cart = $"{BaseUri}/Users/cart";
 
+        public static string Books = $"{BaseOdataUri}/Books";
+
     }
 }
