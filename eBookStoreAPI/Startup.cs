@@ -60,7 +60,12 @@ namespace eBookStoreAPI
             .Expand()
             .SetMaxTop(100)
             .AddRouteComponents("odata", GetEdmModel()));
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
+            services.AddScoped<IPublisherRepository, PublisherRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

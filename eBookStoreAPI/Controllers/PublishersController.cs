@@ -12,17 +12,17 @@ namespace eBookStoreAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BooksController : ODataController
+    public class PublishersController : ODataController
     {
-        IBookRepository repository;
-        public BooksController(IBookRepository _repository)
+        IPublisherRepository repository;
+        public PublishersController(IPublisherRepository _repository)
         {
             repository = _repository;
         }
 
         [EnableQuery(MaxExpansionDepth = 5)]
         [HttpGet]
-        public async Task<ActionResult<List<Book>>> Get()
+        public async Task<ActionResult<List<Publisher>>> Get()
         {
             var list = await repository.GetList();
             if (list == null)
@@ -45,7 +45,7 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Book>> Post(Book obj)
+        public async Task<ActionResult<Book>> Post(Publisher obj)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId) != null)
+                if (await repository.Get(obj.PublisherId) != null)
                 {
                     return Conflict();
                 }
@@ -63,9 +63,9 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpPut("{key}")]
-        public async Task<ActionResult<Book>> Put(int key, Book obj)
+        public async Task<ActionResult<Book>> Put(int key, Publisher obj)
         {
-            if (key != obj.BookId)
+            if (key != obj.PublisherId)
             {
                 return BadRequest();
             }
@@ -77,7 +77,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId) == null)
+                if (await repository.Get(obj.PublisherId) == null)
                 {
                     return NotFound();
                 }
@@ -104,3 +104,4 @@ namespace eBookStoreAPI.Controllers
         }
     }
 }
+

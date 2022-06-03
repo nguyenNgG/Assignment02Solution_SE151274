@@ -8,21 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace eBookStoreAPI.Controllers
+namespace eUserStoreAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BooksController : ODataController
+    public class UsersController : ODataController
     {
-        IBookRepository repository;
-        public BooksController(IBookRepository _repository)
+        IUserRepository repository;
+        public UsersController(IUserRepository _repository)
         {
             repository = _repository;
         }
 
         [EnableQuery(MaxExpansionDepth = 5)]
         [HttpGet]
-        public async Task<ActionResult<List<Book>>> Get()
+        public async Task<ActionResult<List<User>>> Get()
         {
             var list = await repository.GetList();
             if (list == null)
@@ -34,7 +34,7 @@ namespace eBookStoreAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public async Task<ActionResult<Book>> GetSingle([FromODataUri] int key)
+        public async Task<ActionResult<User>> GetSingle([FromODataUri] int key)
         {
             var obj = await repository.Get(key);
             if (obj == null)
@@ -45,7 +45,7 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Book>> Post(Book obj)
+        public async Task<ActionResult<User>> Post(User obj)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId) != null)
+                if (await repository.Get(obj.UserId) != null)
                 {
                     return Conflict();
                 }
@@ -63,9 +63,9 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpPut("{key}")]
-        public async Task<ActionResult<Book>> Put(int key, Book obj)
+        public async Task<ActionResult<User>> Put(int key, User obj)
         {
-            if (key != obj.BookId)
+            if (key != obj.UserId)
             {
                 return BadRequest();
             }
@@ -77,7 +77,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId) == null)
+                if (await repository.Get(obj.UserId) == null)
                 {
                     return NotFound();
                 }
@@ -86,7 +86,7 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpDelete("{key}")]
-        public async Task<ActionResult<Book>> Delete(int key)
+        public async Task<ActionResult<User>> Delete(int key)
         {
             try
             {

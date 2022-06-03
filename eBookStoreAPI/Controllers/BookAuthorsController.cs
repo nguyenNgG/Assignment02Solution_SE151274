@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
@@ -12,17 +13,17 @@ namespace eBookStoreAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BooksController : ODataController
+    public class BookAuthorsController : ODataController
     {
-        IBookRepository repository;
-        public BooksController(IBookRepository _repository)
+        IBookAuthorRepository repository;
+        public BookAuthorsController(IBookAuthorRepository _repository)
         {
             repository = _repository;
         }
 
         [EnableQuery(MaxExpansionDepth = 5)]
         [HttpGet]
-        public async Task<ActionResult<List<Book>>> Get()
+        public async Task<ActionResult<List<BookAuthor>>> Get()
         {
             var list = await repository.GetList();
             if (list == null)
@@ -34,9 +35,9 @@ namespace eBookStoreAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public async Task<ActionResult<Book>> GetSingle([FromODataUri] int key)
+        public async Task<ActionResult<BookAuthor>> GetSingle([FromODataUri] int keyBookId, [FromODataUri] int keyAuthorId)
         {
-            var obj = await repository.Get(key);
+            var obj = await repository.Get(keyBookId, keyAuthorId);
             if (obj == null)
             {
                 return NotFound();
@@ -45,7 +46,7 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Book>> Post(Book obj)
+        public async Task<ActionResult<BookAuthor>> Post(BookAuthor obj)
         {
             try
             {
@@ -54,7 +55,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId) != null)
+                if (await repository.Get(obj.BookId, obj.AuthorId) != null)
                 {
                     return Conflict();
                 }
@@ -63,9 +64,9 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpPut("{key}")]
-        public async Task<ActionResult<Book>> Put(int key, Book obj)
+        public async Task<ActionResult<BookAuthor>> Put([FromODataUri] int keyBookId, [FromODataUri] int keyAuthorId, BookAuthor obj)
         {
-            if (key != obj.BookId)
+            if (keyBookId != obj.BookId && keyAuthorId != obj.AuthorId)
             {
                 return BadRequest();
             }
@@ -77,7 +78,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId) == null)
+                if (await repository.Get(obj.BookId, obj.AuthorId) == null)
                 {
                     return NotFound();
                 }
@@ -86,16 +87,16 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpDelete("{key}")]
-        public async Task<ActionResult<Book>> Delete(int key)
+        public async Task<ActionResult<BookAuthor>> Delete(int keyBookId, int keyAuthorId)
         {
             try
             {
-                await repository.Delete(key);
+                await repository.Delete(keyBookId, keyAuthorId);
                 return NoContent();
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(key) == null)
+                if (await repository.Get(keyBookId, keyAuthorId) == null)
                 {
                     return NotFound();
                 }
