@@ -14,5 +14,6 @@ namespace DataAccess.Repositories.Interfaces
         public Task Add(User obj);
         public Task Update(User obj);
         public Task Delete(int id);
+        public Task<User> Login(string email, string password);
     }
 }

@@ -63,5 +63,11 @@ namespace DataAccess.DAOs
             db.Users.Remove(obj);
             await db.SaveChangesAsync();
         }
+        public async Task<User> Login(string email, string password)
+        {
+            var db = new eBookStoreDbContext();
+            User obj = await db.Users.FirstOrDefaultAsync(x => x.EmailAddress == email && x.Password == password);
+            return obj;
+        }
     }
 }

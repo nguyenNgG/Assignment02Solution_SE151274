@@ -16,5 +16,6 @@ namespace DataAccess.Repositories
         public Task Add(User obj) => UserDAO.Instance.Add(obj);
         public Task Update(User obj) => UserDAO.Instance.Update(obj);
         public Task Delete(int id) => UserDAO.Instance.Delete(id);
+        public Task<User> Login(string email, string password) => UserDAO.Instance.Login(email, password);
     }
 }
