@@ -34,7 +34,7 @@ namespace eBookStoreAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public async Task<ActionResult<Book>> GetSingle([FromODataUri] int key)
+        public async Task<ActionResult<Book>> GetBook([FromODataUri] int key)
         {
             var obj = await repository.Get(key);
             if (obj == null)

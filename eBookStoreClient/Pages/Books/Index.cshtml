@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Books</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -14,37 +14,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Title)
+                @Html.DisplayNameFor(model => model.Books[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Type)
+                @Html.DisplayNameFor(model => model.Books[0].Type)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Publisher)
+                @Html.DisplayNameFor(model => model.Books[0].Publisher)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Price)
+                @Html.DisplayNameFor(model => model.Books[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Advance)
+                @Html.DisplayNameFor(model => model.Books[0].Advance)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Royalty)
+                @Html.DisplayNameFor(model => model.Books[0].Royalty)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].YearToDateSales)
+                @Html.DisplayNameFor(model => model.Books[0].YearToDateSales)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].Notes)
+                @Html.DisplayNameFor(model => model.Books[0].Notes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book[0].PublishedDate)
+                @Html.DisplayNameFor(model => model.Books[0].PublishedDate)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Book) {
+@foreach (var item in Model.Books) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -53,7 +53,7 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Publisher.PublisherId)
+                @Html.DisplayFor(modelItem => item.Publisher.PublisherName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)

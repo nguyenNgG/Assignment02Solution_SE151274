@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net;
 using System.Text.Json;
 using eBookStoreClient.Constants;
+using System.Text.Json.Serialization;
 
 namespace eBookStoreClient.Pages.Books
 {
@@ -35,7 +36,7 @@ namespace eBookStoreClient.Pages.Books
                 if (authResponse.StatusCode == HttpStatusCode.OK)
                 {
                     HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Books}");
+                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Books}?$expand=Publisher");
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -43,7 +44,8 @@ namespace eBookStoreClient.Pages.Books
                         {
                             PropertyNameCaseInsensitive = true,
                         };
-                        Books = JsonSerializer.Deserialize<List<Book>>(await content.ReadAsStringAsync(), jsonSerializerOptions);
+                        var str = await content.ReadAsStringAsync();
+                        Books = JsonSerializer.Deserialize<Books>(str, jsonSerializerOptions).List;
                         return Page();
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
@@ -57,5 +59,11 @@ namespace eBookStoreClient.Pages.Books
             }
             return RedirectToPage(PageRoute.Login);
         }
+    }
+
+    public class Books
+    {
+        [JsonPropertyName("value")]
+        public List<Book> List { get; set; }
     }
 }

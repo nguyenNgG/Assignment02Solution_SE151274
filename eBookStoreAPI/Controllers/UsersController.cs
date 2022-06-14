@@ -41,7 +41,7 @@ namespace eUserStoreAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public async Task<ActionResult<User>> GetSingle([FromODataUri] int key)
+        public async Task<ActionResult<User>> GetUser([FromODataUri] int key)
         {
             var obj = await repository.Get(key);
             if (obj == null)

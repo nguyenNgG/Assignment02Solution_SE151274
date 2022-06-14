@@ -34,7 +34,7 @@ namespace eAuthorStoreAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public async Task<ActionResult<Author>> GetSingle([FromODataUri] int key)
+        public async Task<ActionResult<Author>> GetAuthor([FromODataUri] int key)
         {
             var obj = await repository.Get(key);
             if (obj == null)

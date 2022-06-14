@@ -1,4 +1,28 @@
-﻿<!DOCTYPE html>
+﻿@using System.Net.Http
+@using System.Net
+@using eBookStoreClient.Utilities
+@inject HttpSessionStorage sessionStorage;
+@{
+    bool isAuthenticated = false;
+    bool isAuthorized = false;
+    int memberId = -993901;
+    HttpResponseMessage response = await SessionHelper.Authenticate(Context.Session, sessionStorage);
+    if (response.StatusCode == HttpStatusCode.OK)
+    {
+        isAuthenticated = true;
+
+        response = await SessionHelper.Current(Context.Session, sessionStorage);
+        HttpContent content = response.Content;
+        memberId = int.Parse(await content.ReadAsStringAsync());
+    }
+    response = await SessionHelper.Authorize(Context.Session, sessionStorage);
+    if (response.StatusCode == HttpStatusCode.OK)
+    {
+        isAuthorized = true;
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -21,9 +45,30 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
+                        @if (!isAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Login">Login</a>
+                            </li>
+                        }
+                        @if (isAuthenticated && !isAuthorized)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Details" asp-route-id="@memberId">Profile</a>  
+                            </li>
+                        }
+                        @if (isAuthorized)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Books/Index">Books</a>
+                            </li>
+                        }
+                        @if (isAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Logout">Logout</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -37,7 +82,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - eBookStoreClient - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2022 - eBookStoreClient
         </div>
     </footer>
 

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBookStoreAPI", "eBookStore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{3BB2E1A8-65EE-4424-880F-F2099B213A8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBookStoreClient", "eBookStoreClient\eBookStoreClient.csproj", "{B9960F44-4F03-41BD-A03F-62AEE35C19D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eBookStoreClient", "eBookStoreClient\eBookStoreClient.csproj", "{B9960F44-4F03-41BD-A03F-62AEE35C19D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
