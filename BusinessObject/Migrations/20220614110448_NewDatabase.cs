@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace BusinessObject.Migrations
 {
-    public partial class InitialDatabase : Migration
+    public partial class NewDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,7 +60,7 @@ namespace BusinessObject.Migrations
                     book_id = table.Column<int>(type: "int", nullable: false),
                     title = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     type = table.Column<string>(type: "nvarchar(100)", nullable: true),
-                    publisher_id = table.Column<int>(type: "int", nullable: false),
+                    publisher_id = table.Column<int>(type: "int", nullable: true),
                     price = table.Column<decimal>(type: "money", nullable: false),
                     advance = table.Column<decimal>(type: "money", nullable: false),
                     royalty = table.Column<decimal>(type: "money", nullable: false),
@@ -76,7 +76,7 @@ namespace BusinessObject.Migrations
                         column: x => x.publisher_id,
                         principalTable: "Publishers",
                         principalColumn: "publisher_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,8 +90,8 @@ namespace BusinessObject.Migrations
                     first_name = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     middle_name = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     last_name = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    role_id = table.Column<int>(type: "int", nullable: false),
-                    publisher_id = table.Column<int>(type: "int", nullable: false),
+                    role_id = table.Column<int>(type: "int", nullable: true),
+                    publisher_id = table.Column<int>(type: "int", nullable: true),
                     hire_date = table.Column<DateTime>(type: "datetime2(7)", nullable: false)
                 },
                 constraints: table =>
@@ -102,13 +102,13 @@ namespace BusinessObject.Migrations
                         column: x => x.publisher_id,
                         principalTable: "Publishers",
                         principalColumn: "publisher_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Users_Roles_role_id",
                         column: x => x.role_id,
                         principalTable: "Roles",
                         principalColumn: "role_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(

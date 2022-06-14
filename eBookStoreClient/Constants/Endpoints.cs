@@ -12,6 +12,7 @@
         public static string Cart = $"{BaseUri}/Users/cart";
 
         public static string Books = $"{BaseOdataUri}/Books";
+        public static string Authors = $"{BaseOdataUri}/Authors";
 
     }
 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject
 {
@@ -15,7 +12,7 @@ namespace BusinessObject
             BookAuthors = new HashSet<BookAuthor>();
         }
 
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column("author_id")]
         public int AuthorId { get; set; }
 
@@ -43,6 +40,7 @@ namespace BusinessObject
         [Column("email_address", TypeName = "varchar(200)")]
         public string EmailAddress { get; set; }
 
+        [JsonIgnore]
         public ICollection<BookAuthor> BookAuthors { get; set; }
     }
 }

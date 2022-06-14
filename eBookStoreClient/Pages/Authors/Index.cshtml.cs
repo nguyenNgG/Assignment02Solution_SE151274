@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace eBookStoreClient.Pages.Books
+namespace eBookStoreClient.Pages.Authors
 {
     public class IndexModel : PageModel
     {
@@ -21,10 +21,7 @@ namespace eBookStoreClient.Pages.Books
             sessionStorage = _sessionStorage;
         }
 
-        public IList<Book> Books { get; set; }
-
-        [BindProperty]
-        public string Filter { get; set; }
+        public IList<Author> Authors { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -34,13 +31,13 @@ namespace eBookStoreClient.Pages.Books
                 if (authResponse.StatusCode == HttpStatusCode.OK)
                 {
                     HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Books}?$expand=Publisher");
+                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Authors}");
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
 
                         var str = await content.ReadAsStringAsync();
-                        Books = JsonSerializer.Deserialize<Books>(str, SerializerOptions.CaseInsensitive).List;
+                        Authors = JsonSerializer.Deserialize<Authors>(str, SerializerOptions.CaseInsensitive).List;
                         return Page();
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
@@ -56,9 +53,9 @@ namespace eBookStoreClient.Pages.Books
         }
     }
 
-    public class Books
+    public class Authors
     {
         [JsonPropertyName("value")]
-        public List<Book> List { get; set; }
+        public List<Author> List { get; set; }
     }
 }

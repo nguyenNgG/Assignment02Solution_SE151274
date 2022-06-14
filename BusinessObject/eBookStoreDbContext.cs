@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject
 {
@@ -25,17 +20,26 @@ namespace BusinessObject
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("eBookStore"));
         }
 
-        public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Role> Roles { get; set; } = null!;
-        public DbSet<Publisher> Publishers { get; set; } = null!;
-        public DbSet<Author> Authors { get; set; } = null!;
-        public DbSet<Book> Books { get; set; } = null!;
-        public DbSet<BookAuthor> BookAuthors { get; set; } = null!;
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<BookAuthor> BookAuthors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Book>().Property(b => b.PublisherId)
+                .IsRequired(false);
+            modelBuilder.Entity<User>().Property(u => u.PublisherId)
+                .IsRequired(false);
+            modelBuilder.Entity<User>().Property(u => u.RoleId)
+                .IsRequired(false);
+
             modelBuilder.Entity<BookAuthor>()
                 .HasKey(ba => new { ba.AuthorId, ba.BookId });
+
+            base.OnModelCreating(modelBuilder);
         }
 
     }

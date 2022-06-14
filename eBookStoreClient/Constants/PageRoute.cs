@@ -8,6 +8,9 @@
         // Books
         public static string Books = "/Books/Index";
 
+        // Authors
+        public static string Authors = "/Authors/Index";
+
         // Users
         public static string Users = "/Users/Index";
         public static string Login = "/Users/Login";

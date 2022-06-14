@@ -1,9 +1,6 @@
 ﻿using BusinessObject;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAOs
@@ -61,7 +58,7 @@ namespace DataAccess.DAOs
         public async Task Delete(int bookId, int authorId)
         {
             var db = new eBookStoreDbContext();
-            BookAuthor obj = new BookAuthor { BookId = bookId, AuthorId = authorId};
+            BookAuthor obj = new BookAuthor { BookId = bookId, AuthorId = authorId };
             db.BookAuthors.Attach(obj);
             db.BookAuthors.Remove(obj);
             await db.SaveChangesAsync();

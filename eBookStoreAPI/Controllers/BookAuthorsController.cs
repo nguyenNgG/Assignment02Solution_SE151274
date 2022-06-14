@@ -1,6 +1,5 @@
 ﻿using BusinessObject;
 using DataAccess.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
@@ -55,7 +54,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId, obj.AuthorId) != null)
+                if (await repository.Get(obj.BookId.Value, obj.AuthorId.Value) != null)
                 {
                     return Conflict();
                 }
@@ -78,7 +77,7 @@ namespace eBookStoreAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (await repository.Get(obj.BookId, obj.AuthorId) == null)
+                if (await repository.Get(obj.BookId.Value, obj.AuthorId.Value) == null)
                 {
                     return NotFound();
                 }

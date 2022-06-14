@@ -1,11 +1,12 @@
 ﻿@using System.Net.Http
 @using System.Net
+@using eBookStoreClient.Constants
 @using eBookStoreClient.Utilities
 @inject HttpSessionStorage sessionStorage;
 @{
     bool isAuthenticated = false;
     bool isAuthorized = false;
-    int memberId = -993901;
+    int userId = -993901;
     HttpResponseMessage response = await SessionHelper.Authenticate(Context.Session, sessionStorage);
     if (response.StatusCode == HttpStatusCode.OK)
     {
@@ -13,7 +14,7 @@
 
         response = await SessionHelper.Current(Context.Session, sessionStorage);
         HttpContent content = response.Content;
-        memberId = int.Parse(await content.ReadAsStringAsync());
+        userId = int.Parse(await content.ReadAsStringAsync());
     }
     response = await SessionHelper.Authorize(Context.Session, sessionStorage);
     if (response.StatusCode == HttpStatusCode.OK)
@@ -43,30 +44,33 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Home">Home</a>
                         </li>
                         @if (!isAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Login">Login</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Login">Login</a>
                             </li>
                         }
                         @if (isAuthenticated && !isAuthorized)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Details" asp-route-id="@memberId">Profile</a>  
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Profile" asp-route-id="@userId">Profile</a>  
                             </li>
                         }
                         @if (isAuthorized)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Books/Index">Books</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Books">Books</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Authors">Authors</a>
                             </li>
                         }
                         @if (isAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Logout">Logout</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Logout">Logout</a>
                             </li>
                         }
                     </ul>

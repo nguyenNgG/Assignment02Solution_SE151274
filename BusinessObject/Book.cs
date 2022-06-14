@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject
 {
@@ -15,7 +12,7 @@ namespace BusinessObject
             BookAuthors = new HashSet<BookAuthor>();
         }
 
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column("book_id")]
         public int BookId { get; set; }
 
@@ -26,10 +23,10 @@ namespace BusinessObject
         public string Type { get; set; }
 
         [Column("publisher_id")]
-        public int PublisherId { get; set; }
+        public int? PublisherId { get; set; }
 
         [ForeignKey("PublisherId")]
-        public Publisher Publisher { get; set; }
+        public Publisher? Publisher { get; set; }
 
         [Column("price", TypeName = "money")]
         public decimal Price { get; set; }

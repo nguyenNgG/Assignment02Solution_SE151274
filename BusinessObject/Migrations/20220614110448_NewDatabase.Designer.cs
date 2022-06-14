@@ -10,24 +10,22 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(eBookStoreDbContext))]
-    [Migration("20220531140326_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20220614110448_NewDatabase")]
+    partial class NewDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.12")
+                .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BusinessObject.Author", b =>
                 {
                     b.Property<int>("AuthorId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("author_id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("author_id");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(200)")
@@ -69,10 +67,8 @@ namespace BusinessObject.Migrations
             modelBuilder.Entity("BusinessObject.Book", b =>
                 {
                     b.Property<int>("BookId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("book_id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("book_id");
 
                     b.Property<decimal>("Advance")
                         .HasColumnType("money")
@@ -90,7 +86,7 @@ namespace BusinessObject.Migrations
                         .HasColumnType("datetime2(7)")
                         .HasColumnName("published_date");
 
-                    b.Property<int>("PublisherId")
+                    b.Property<int?>("PublisherId")
                         .HasColumnType("int")
                         .HasColumnName("publisher_id");
 
@@ -119,11 +115,11 @@ namespace BusinessObject.Migrations
 
             modelBuilder.Entity("BusinessObject.BookAuthor", b =>
                 {
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int")
                         .HasColumnName("author_id");
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookId")
                         .HasColumnType("int")
                         .HasColumnName("book_id");
 
@@ -145,10 +141,8 @@ namespace BusinessObject.Migrations
             modelBuilder.Entity("BusinessObject.Publisher", b =>
                 {
                     b.Property<int>("PublisherId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("publisher_id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("publisher_id");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(100)")
@@ -174,10 +168,8 @@ namespace BusinessObject.Migrations
             modelBuilder.Entity("BusinessObject.Role", b =>
                 {
                     b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("role_id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("role_id");
 
                     b.Property<string>("RoleDesc")
                         .HasColumnType("nvarchar(200)")
@@ -191,10 +183,8 @@ namespace BusinessObject.Migrations
             modelBuilder.Entity("BusinessObject.User", b =>
                 {
                     b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("user_id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("user_id");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(200)")
@@ -220,11 +210,11 @@ namespace BusinessObject.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasColumnName("password");
 
-                    b.Property<int>("PublisherId")
+                    b.Property<int?>("PublisherId")
                         .HasColumnType("int")
                         .HasColumnName("publisher_id");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int")
                         .HasColumnName("role_id");
 
@@ -245,9 +235,7 @@ namespace BusinessObject.Migrations
                 {
                     b.HasOne("BusinessObject.Publisher", "Publisher")
                         .WithMany("Books")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublisherId");
 
                     b.Navigation("Publisher");
                 });
@@ -275,15 +263,11 @@ namespace BusinessObject.Migrations
                 {
                     b.HasOne("BusinessObject.Publisher", "Publisher")
                         .WithMany("Users")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublisherId");
 
                     b.HasOne("BusinessObject.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Publisher");
 

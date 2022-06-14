@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace BusinessObject
 {
     public class User
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column("user_id")]
         public int UserId { get; set; }
 
@@ -34,20 +29,18 @@ namespace BusinessObject
         public string LastName { get; set; }
 
         [Column("role_id")]
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
 
         [Column("publisher_id")]
-        public int PublisherId { get; set; }
+        public int? PublisherId { get; set; }
 
         [ForeignKey("PublisherId")]
-        public Publisher Publisher { get; set; }
+        public Publisher? Publisher { get; set; }
 
         [Column("hire_date", TypeName = "datetime2(7)")]
         public DateTime HireDate { get; set; }
-
-
     }
 }
