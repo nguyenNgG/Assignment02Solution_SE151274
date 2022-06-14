@@ -11,6 +11,9 @@
         // Authors
         public static string Authors = "/Authors/Index";
 
+        // Publishers
+        public static string Publishers = "/Publishers/Index";
+
         // Users
         public static string Users = "/Users/Index";
         public static string Login = "/Users/Login";

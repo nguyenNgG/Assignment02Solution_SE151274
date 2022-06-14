@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace eBookStoreClient.Pages.Authors
+namespace eBookStoreClient.Pages.Publishers
 {
     public class DeleteModel : PageModel
     {
@@ -20,10 +20,10 @@ namespace eBookStoreClient.Pages.Authors
         }
 
         [BindProperty]
-        public Author Author { get; set; }
+        public Publisher Publisher { get; set; }
 
         [TempData]
-        public int AuthorId { get; set; }
+        public int PublisherId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,26 +31,26 @@ namespace eBookStoreClient.Pages.Authors
             {
                 if (id == null)
                 {
-                    return RedirectToPage(PageRoute.Authors);
+                    return RedirectToPage(PageRoute.Publishers);
                 }
 
-                AuthorId = (int)id;
-                TempData["AuthorId"] = AuthorId;
+                PublisherId = (int)id;
+                TempData["PublisherId"] = PublisherId;
 
                 HttpResponseMessage authResponse = await SessionHelper.Authorize(HttpContext.Session, sessionStorage);
                 if (authResponse.StatusCode == HttpStatusCode.OK)
                 {
                     HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Authors}/{id}");
+                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Publishers}/{id}");
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        Author = JsonSerializer.Deserialize<Author>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
+                        Publisher = JsonSerializer.Deserialize<Publisher>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
                         return Page();
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        return RedirectToPage(PageRoute.Authors);
+                        return RedirectToPage(PageRoute.Publishers);
                     }
                 }
             }
@@ -62,24 +62,24 @@ namespace eBookStoreClient.Pages.Authors
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            Author.AuthorId = (int)TempData.Peek("AuthorId");
-            TempData.Keep("AuthorId");
+            Publisher.PublisherId = (int)TempData.Peek("PublisherId");
+            TempData.Keep("PublisherId");
 
             try
             {
                 HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                HttpResponseMessage response = await httpClient.DeleteAsync($"{Endpoints.Authors}/{AuthorId}");
+                HttpResponseMessage response = await httpClient.DeleteAsync($"{Endpoints.Publishers}/{PublisherId}");
                 HttpContent content = response.Content;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return RedirectToPage(PageRoute.Authors);
+                    return RedirectToPage(PageRoute.Publishers);
                 }
-                return await OnGetAsync(Author.AuthorId);
+                return await OnGetAsync(Publisher.PublisherId);
             }
             catch
             {
             }
-            return RedirectToPage(PageRoute.Authors);
+            return RedirectToPage(PageRoute.Publishers);
         }
     }
 }

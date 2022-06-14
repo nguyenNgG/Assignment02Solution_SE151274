@@ -39,8 +39,6 @@ namespace BusinessObject
 
         [Column("email_address", TypeName = "varchar(200)")]
         public string EmailAddress { get; set; }
-
-        [JsonIgnore]
         public ICollection<BookAuthor> BookAuthors { get; set; }
     }
 }

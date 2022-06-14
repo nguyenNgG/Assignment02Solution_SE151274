@@ -3,45 +3,54 @@ using eBookStoreClient.Constants;
 using eBookStoreClient.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace eBookStoreClient.Pages.Publishers
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
         HttpSessionStorage sessionStorage;
 
-        public IndexModel(HttpSessionStorage _sessionStorage)
+        public DetailsModel(HttpSessionStorage _sessionStorage)
         {
             sessionStorage = _sessionStorage;
         }
 
-        public IList<Publisher> Publishers { get; set; }
+        [BindProperty]
+        public Publisher Publisher { get; set; }
 
-        public async Task<IActionResult> OnGetAsync()
+        [TempData]
+        public int PublisherId { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             try
             {
+                if (id == null)
+                {
+                    return RedirectToPage(PageRoute.Publishers);
+                }
+
+                PublisherId = (int)id;
+                TempData["PublisherId"] = PublisherId;
+
                 HttpResponseMessage authResponse = await SessionHelper.Authorize(HttpContext.Session, sessionStorage);
                 if (authResponse.StatusCode == HttpStatusCode.OK)
                 {
                     HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Publishers}");
+                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Publishers}/{id}");
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var str = await content.ReadAsStringAsync();
-                        Publishers = JsonSerializer.Deserialize<Publishers>(str, SerializerOptions.CaseInsensitive).List;
+                        Publisher = JsonSerializer.Deserialize<Publisher>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
                         return Page();
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        return Page();
+                        return RedirectToPage(PageRoute.Publishers);
                     }
                 }
             }
@@ -50,11 +59,5 @@ namespace eBookStoreClient.Pages.Publishers
             }
             return RedirectToPage(PageRoute.Login);
         }
-    }
-
-    public class Publishers
-    {
-        [JsonPropertyName("value")]
-        public List<Publisher> List { get; set; }
     }
 }

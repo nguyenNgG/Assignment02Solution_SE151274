@@ -38,7 +38,6 @@ namespace eBookStoreClient.Pages.Books
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-
                         var str = await content.ReadAsStringAsync();
                         Books = JsonSerializer.Deserialize<Books>(str, SerializerOptions.CaseInsensitive).List;
                         return Page();

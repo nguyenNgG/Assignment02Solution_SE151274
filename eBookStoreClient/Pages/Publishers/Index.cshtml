@@ -2,10 +2,10 @@
 @model eBookStoreClient.Pages.Publishers.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Publishers";
 }
 
-<h1>Index</h1>
+<h1>Publishers</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -14,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher[0].PublisherName)
+                @Html.DisplayNameFor(model => model.Publishers[0].PublisherName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher[0].City)
+                @Html.DisplayNameFor(model => model.Publishers[0].City)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher[0].State)
+                @Html.DisplayNameFor(model => model.Publishers[0].State)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher[0].Country)
+                @Html.DisplayNameFor(model => model.Publishers[0].Country)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Publisher) {
+@foreach (var item in Model.Publishers) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.PublisherName)

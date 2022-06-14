@@ -1,0 +1,50 @@
+﻿@page
+@model eBookStoreClient.Pages.Publishers.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Publisher</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Publisher.PublisherId" />
+            <div class="form-group">
+                <label asp-for="Publisher.PublisherName" class="control-label"></label>
+                <input asp-for="Publisher.PublisherName" class="form-control" />
+                <span asp-validation-for="Publisher.PublisherName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publisher.City" class="control-label"></label>
+                <input asp-for="Publisher.City" class="form-control" />
+                <span asp-validation-for="Publisher.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publisher.State" class="control-label"></label>
+                <input asp-for="Publisher.State" class="form-control" />
+                <span asp-validation-for="Publisher.State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publisher.Country" class="control-label"></label>
+                <input asp-for="Publisher.Country" class="form-control" />
+                <span asp-validation-for="Publisher.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

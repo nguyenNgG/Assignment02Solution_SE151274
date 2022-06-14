@@ -55,7 +55,7 @@
                         @if (isAuthenticated && !isAuthorized)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Profile" asp-route-id="@userId">Profile</a>  
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Profile" asp-route-id="@userId">Profile</a>
                             </li>
                         }
                         @if (isAuthorized)
@@ -65,6 +65,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Authors">Authors</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="@PageRoute.Publishers">Publishers</a>
                             </li>
                         }
                         @if (isAuthenticated)

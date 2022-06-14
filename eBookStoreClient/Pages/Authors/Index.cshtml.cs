@@ -35,7 +35,6 @@ namespace eBookStoreClient.Pages.Authors
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-
                         var str = await content.ReadAsStringAsync();
                         Authors = JsonSerializer.Deserialize<Authors>(str, SerializerOptions.CaseInsensitive).List;
                         return Page();

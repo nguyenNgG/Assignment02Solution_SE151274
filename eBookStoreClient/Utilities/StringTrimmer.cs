@@ -18,6 +18,18 @@ namespace eStoreClient.Utilities
             return author;
         }
 
+        public static Publisher TrimPublisher(Publisher publisher)
+        {
+            if (publisher != null)
+            {
+                publisher.PublisherName = publisher.PublisherName.Trim();
+                publisher.City = publisher.City.Trim();
+                publisher.State = publisher.State.Trim();
+                publisher.Country = publisher.Country.Trim();
+            }
+            return publisher;
+        }
+
         public static Book TrimBook(Book book)
         {
             if (book != null)
