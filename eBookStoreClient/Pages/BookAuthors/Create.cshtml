@@ -1,25 +1,24 @@
 ﻿@page
 @model eBookStoreClient.Pages.BookAuthors.CreateModel
 @{
-    ViewData["Title"] = "Add Product to Order";
+    ViewData["Title"] = "Assign Author to Book";
 }
 
-<h1>Add Product to Order</h1>
+<h1>Assign Author to Book</h1>
 
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
             <div class="form-group">
-                @*<label asp-for="ProductItem.ProductId" class="control-label"></label>*@
-                @*<select asp-for="ProductItem.ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>*@
-                @*<span class="text-danger">@Model.ProductMessage</span>*@
+                <label asp-for="Author.AuthorId" class="control-label"></label>
+                <select asp-for="Author.AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
+                <span class="text-danger">@Model.AuthorMessage</span>
             </div>
             <div class="form-group">
-                @*<label asp-for="CartDetail.Quantity" class="control-label"></label>*@
-                @*<input asp-for="CartDetail.Quantity" type="number" class="form-control" />*@
-                @*<span asp-validation-for="CartDetail.Quantity" class="text-danger"></span>*@
-                @*<span class="text-danger">@Model.QuantityMessage</span>*@
+                <label asp-for="CartDetail.AuthorOrder" class="control-label"></label>
+                <input asp-for="CartDetail.AuthorOrder" type="number" class="form-control" />
+                <span class="text-danger">@Model.OrderMessage</span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
@@ -28,5 +27,5 @@
     </div>
 </div>
 
-<a asp-page="/Carts/Details">Back</a>
+<a asp-page="/BookAuthors/Details">Back</a>
 

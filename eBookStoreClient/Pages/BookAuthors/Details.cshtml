@@ -1,0 +1,48 @@
+﻿@page
+@model eBookStoreClient.Pages.BookAuthors.DetailsModel
+@{
+    ViewData["Title"] = "Assigned Authors";
+    var cart = Model.Cart;
+}
+
+<h1>Assigned Authors</h1>
+
+<a asp-page="/BookAuthors/Create" class="btn btn-primary mb-2">Assign Author to Book</a>
+<a asp-page="/Books/Prepare" class="btn btn-outline-primary mb-2">Create Book</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.CartDetails.First().Author.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.CartDetails.First().Author.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.CartDetails.First().AuthorOrder)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cartDetail in cart.CartDetails)
+        {
+            <tr>
+                <td>
+                    @cartDetail.Author.FirstName
+                </td>
+                <td>
+                    @cartDetail.Author.LastName
+                </td>
+                <td>
+                    @cartDetail.AuthorOrder
+                </td>
+                <td>
+                    <a asp-page="/BookAuthors/Edit" asp-route-item-index="@cart.CartDetails.FindIndex(cd => cd == cartDetail)">Edit</a> | 
+                    <a asp-page="/BookAuthors/Delete" asp-route-item-index="@cart.CartDetails.FindIndex(cd => cd == cartDetail)">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

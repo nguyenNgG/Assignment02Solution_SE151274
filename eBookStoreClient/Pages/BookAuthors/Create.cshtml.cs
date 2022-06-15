@@ -108,6 +108,12 @@ namespace eBookStoreClient.Pages.BookAuthors
                                 AuthorMessage = "Author has already been assigned.";
                                 return Page();
                             }
+                            bool hasOrderConflict = cart.CartDetails.Where(cartDetail => cartDetail.AuthorOrder == CartDetail.AuthorOrder).Any();
+                            if (hasOrderConflict)
+                            {
+                                OrderMessage = "This order is taken.";
+                                return Page();
+                            }
                             response = await httpClient.GetAsync($"{Endpoints.Authors}/{Author.AuthorId}");
                             content = response.Content;
                             if (response.StatusCode == HttpStatusCode.OK)

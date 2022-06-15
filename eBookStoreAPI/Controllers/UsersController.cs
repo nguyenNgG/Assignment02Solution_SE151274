@@ -165,7 +165,7 @@ namespace eUserStoreAPI.Controllers
             Cart cart = SessionHelper.GetFromSession<Cart>(HttpContext.Session, SessionValue.Cart);
             if (cart == null)
             {
-                return BadRequest();
+                cart = new Cart();
             }
             return Ok(cart);
         }
