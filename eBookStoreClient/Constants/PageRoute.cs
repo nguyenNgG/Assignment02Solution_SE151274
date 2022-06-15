@@ -7,6 +7,7 @@
 
         // Books
         public static string Books = "/Books/Index";
+        public static string BooksPrepare = "/Books/Prepare";
 
         // Authors
         public static string Authors = "/Authors/Index";
@@ -21,12 +22,8 @@
         public static string Profile = "/Users/Details";
         public static string EditProfile = "/Users/Edit";
 
-        // Order
-        public static string Orders = "/Orders/Index";
-        public static string OrderPrepare = "/Orders/Prepare";
-
         // Cart
-        public static string Cart = "/Cart/Details";
-        public static string CartCreate = "/Carts/Create";
+        public static string Cart = "/BookAuthors/Details";
+        public static string CartCreate = "/BookAuthors/Create";
     }
 }

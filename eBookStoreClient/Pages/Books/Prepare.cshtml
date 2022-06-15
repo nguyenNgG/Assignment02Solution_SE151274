@@ -1,0 +1,22 @@
+﻿@page
+@model eBookStoreClient.Pages.Books.PrepareModel
+@{
+    ViewData["Title"] = "Prepare a new Book";
+}
+<div class="card">
+    <div class="card-header">
+        Assign Authors to Book
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-column col-4 ">
+            <a asp-page="/Authors/Create" class="btn btn-outline-primary mb-2">Create new Author</a>
+            <a asp-page="/BookAuthors/Details" class="btn btn-primary">View Assigned Authors</a>
+        </div>
+        <div class="d-flex flex-row-reverse">
+            <div class="d-flex flex-column">
+                <div class="font-weight-light">@Model.Message</div>
+                <a asp-page="/Books/Create" class="btn btn-primary mt-2 @Model.HasItems">Proceed to Create Order</a>
+            </div>
+        </div>
+    </div>
+</div>
