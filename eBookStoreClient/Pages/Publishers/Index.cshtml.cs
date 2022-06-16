@@ -52,7 +52,7 @@ namespace eBookStoreClient.Pages.Publishers
         }
     }
 
-    public class Publishers
+    class Publishers
     {
         [JsonPropertyName("value")]
         public List<Publisher> List { get; set; }

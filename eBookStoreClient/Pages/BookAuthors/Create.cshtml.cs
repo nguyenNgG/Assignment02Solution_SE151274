@@ -156,7 +156,7 @@ namespace eBookStoreClient.Pages.BookAuthors
         }
     }
 
-    public class Authors
+    class Authors
     {
         [JsonPropertyName("value")]
         public List<Author> List { get; set; }

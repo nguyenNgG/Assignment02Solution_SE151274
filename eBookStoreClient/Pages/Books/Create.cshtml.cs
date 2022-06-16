@@ -121,11 +121,19 @@ namespace eBookStoreClient.Pages.Books
                                 return Page();
                             }
 
-                            Cart.CartDetails.Clear();
-                            StringContent cartBody = new StringContent(JsonSerializer.Serialize(Cart), Encoding.UTF8, "application/json");
-                            response = await httpClient.PostAsync(Endpoints.Cart, cartBody);
+                            if (response.StatusCode == HttpStatusCode.BadRequest)
+                            {
+                                return Page();
+                            }
 
-                            return RedirectToPage(PageRoute.Books);
+                            if (response.StatusCode == HttpStatusCode.Created)
+                            {
+                                Cart.CartDetails.Clear();
+                                StringContent cartBody = new StringContent(JsonSerializer.Serialize(Cart), Encoding.UTF8, "application/json");
+                                response = await httpClient.PostAsync(Endpoints.Cart, cartBody);
+
+                                return RedirectToPage(PageRoute.Books);
+                            }
                         }
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
@@ -141,7 +149,7 @@ namespace eBookStoreClient.Pages.Books
         }
     }
 
-    public class Publishers
+    class Publishers
     {
         [JsonPropertyName("value")]
         public List<Publisher> List { get; set; }

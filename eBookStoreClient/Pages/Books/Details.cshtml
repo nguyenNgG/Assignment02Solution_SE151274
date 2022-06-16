@@ -67,6 +67,67 @@
         </dd>
     </dl>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.Zip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.EmailAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.BookAuthors) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Zip)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.EmailAddress)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Book.BookId">Edit</a> |
     <a asp-page="./Index">Back to List</a>

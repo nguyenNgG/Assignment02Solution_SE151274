@@ -3,6 +3,8 @@ using eBookStoreClient.Constants;
 using eBookStoreClient.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -19,11 +21,12 @@ namespace eBookStoreClient.Pages.Books
             sessionStorage = _sessionStorage;
         }
 
-        [BindProperty]
         public Book Book { get; set; }
 
         [TempData]
         public int BookId { get; set; }
+
+        public List<BookAuthor> BookAuthors { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -46,6 +49,7 @@ namespace eBookStoreClient.Pages.Books
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         Book = JsonSerializer.Deserialize<Book>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
+                        BookAuthors = Book.BookAuthors.ToList();
                         return Page();
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)

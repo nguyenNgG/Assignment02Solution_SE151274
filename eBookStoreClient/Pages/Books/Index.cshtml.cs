@@ -4,6 +4,7 @@ using eBookStoreClient.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -62,20 +63,12 @@ namespace eBookStoreClient.Pages.Books
                 if (authResponse.StatusCode == HttpStatusCode.OK)
                 {
                     HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                    HttpResponseMessage response;
-                    if (int.TryParse(Filter, out int numFilter))
-                    {
-                        response = await httpClient.GetAsync($"{Endpoints.Books}?$filter=Price eq {numFilter}&$expand=Publisher");
-                    }
-                    else
-                    {
-                        response = await httpClient.GetAsync($"{Endpoints.Books}?$filter=contains(tolower(Title),'{Filter.ToLower()}')&$expand=Publisher");
-                    }
-
+                    HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Books}?$expand=Publisher");
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         Books = JsonSerializer.Deserialize<Books>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive).List;
+                        Books = Books.Where(b => b.Title.ToLower().Contains(Filter.ToLower()) || b.Price.ToString().Contains(Filter.ToLower())).ToList();
                         return Page();
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
@@ -91,7 +84,7 @@ namespace eBookStoreClient.Pages.Books
         }
     }
 
-    public class Books
+    class Books
     {
         [JsonPropertyName("value")]
         public List<Book> List { get; set; }
