@@ -10,6 +10,17 @@
 <p>
     <a asp-page="Prepare">Create New</a>
 </p>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="lead">Search by name, price</div>
+        <form method="post" class="d-flex flex-row my-3">
+            <input asp-for="@Model.Filter" class="form-control" />
+            <input type="submit" value="Search" class="mx-1 btn btn-primary" />
+        </form>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>

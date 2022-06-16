@@ -68,7 +68,6 @@ namespace eBookStoreClient.Pages.Authors
         {
             Author.AuthorId = (int)TempData.Peek("AuthorId");
             TempData.Keep("AuthorId");
-            Author = StringTrimmer.TrimAuthor(Author);
 
             if (!ModelState.IsValid)
             {
@@ -79,6 +78,7 @@ namespace eBookStoreClient.Pages.Authors
 
             try
             {
+                Author = StringTrimmer.TrimAuthor(Author);
                 string v = JsonSerializer.Serialize(Author);
                 StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
 

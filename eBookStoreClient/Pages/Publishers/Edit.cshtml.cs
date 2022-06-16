@@ -68,7 +68,6 @@ namespace eBookStoreClient.Pages.Publishers
         {
             Publisher.PublisherId = (int)TempData.Peek("PublisherId");
             TempData.Keep("PublisherId");
-            Publisher = StringTrimmer.TrimPublisher(Publisher);
 
             if (!ModelState.IsValid)
             {
@@ -79,6 +78,7 @@ namespace eBookStoreClient.Pages.Publishers
 
             try
             {
+                Publisher = StringTrimmer.TrimPublisher(Publisher);
                 string v = JsonSerializer.Serialize(Publisher);
                 StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
 

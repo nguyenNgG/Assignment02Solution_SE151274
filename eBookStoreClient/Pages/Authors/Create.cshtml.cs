@@ -43,7 +43,6 @@ namespace eBookStoreClient.Pages.Authors
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            Author = StringTrimmer.TrimAuthor(Author);
             if (!ModelState.IsValid)
             {
                 SessionHelper.SaveToSession(HttpContext.Session, Author, "Author");
@@ -51,6 +50,7 @@ namespace eBookStoreClient.Pages.Authors
             }
             try
             {
+                Author = StringTrimmer.TrimAuthor(Author);
                 HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
                 StringContent body = new StringContent(JsonSerializer.Serialize(Author), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(Endpoints.Authors, body);

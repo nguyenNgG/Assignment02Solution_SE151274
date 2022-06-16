@@ -53,6 +53,42 @@ namespace eBookStoreClient.Pages.Books
             }
             return RedirectToPage(PageRoute.Login);
         }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                HttpResponseMessage authResponse = await SessionHelper.Authorize(HttpContext.Session, sessionStorage);
+                if (authResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
+                    HttpResponseMessage response;
+                    if (int.TryParse(Filter, out int numFilter))
+                    {
+                        response = await httpClient.GetAsync($"{Endpoints.Books}?$filter=Price eq {numFilter}&$expand=Publisher");
+                    }
+                    else
+                    {
+                        response = await httpClient.GetAsync($"{Endpoints.Books}?$filter=contains(tolower(Title),'{Filter.ToLower()}')&$expand=Publisher");
+                    }
+
+                    HttpContent content = response.Content;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        Books = JsonSerializer.Deserialize<Books>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive).List;
+                        return Page();
+                    }
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        return Page();
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return RedirectToPage(PageRoute.Login);
+        }
     }
 
     public class Books

@@ -2,6 +2,7 @@
 using eBookStoreClient.Constants;
 using eBookStoreClient.Models;
 using eBookStoreClient.Utilities;
+using eStoreClient.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -110,6 +111,7 @@ namespace eBookStoreClient.Pages.Books
                                 };
                                 Book.BookAuthors.Add(bookAuthor);
                             }
+                            Book = StringTrimmer.TrimBook(Book);
                             Book.PublishedDate = Book.PublishedDate.ToLocalTime();
                             StringContent bookBody = new StringContent(JsonSerializer.Serialize(Book), Encoding.UTF8, "application/json");
                             response = await httpClient.PostAsync($"{Endpoints.Books}", bookBody);

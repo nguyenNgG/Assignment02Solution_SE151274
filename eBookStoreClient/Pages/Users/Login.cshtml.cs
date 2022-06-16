@@ -23,6 +23,8 @@ namespace eBookStoreClient.Pages.Users
         [BindProperty]
         public LoginForm LoginForm { get; set; }
 
+        public string ErrorMessage { get; set; }
+
         public async Task<ActionResult> OnGet()
         {
             try
@@ -78,6 +80,7 @@ namespace eBookStoreClient.Pages.Users
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
                     LoginForm = new LoginForm();
+                    ErrorMessage = "Email or password was invalid. Please try again.";
                     return Page();
                 }
             }

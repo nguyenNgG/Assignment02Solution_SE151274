@@ -96,6 +96,7 @@ namespace eBookStoreClient.Pages.BookAuthors
                             Name = $"{a.FirstName} {a.LastName}"
                         }).ToList();
                         ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
+
                         response = await httpClient.GetAsync($"{Endpoints.Cart}");
                         content = response.Content;
                         if (response.StatusCode == HttpStatusCode.OK)
@@ -112,6 +113,12 @@ namespace eBookStoreClient.Pages.BookAuthors
                             if (hasOrderConflict)
                             {
                                 OrderMessage = "This order is taken.";
+                                return Page();
+                            }
+                            bool invalidOrder = CartDetail.AuthorOrder < 0;
+                            if (invalidOrder)
+                            {
+                                OrderMessage = "Order can't be lower than 0.";
                                 return Page();
                             }
                             response = await httpClient.GetAsync($"{Endpoints.Authors}/{Author.AuthorId}");
