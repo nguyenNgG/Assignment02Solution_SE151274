@@ -111,7 +111,7 @@ namespace eBookStoreClient.Pages.Books
                                 Book.BookAuthors.Add(bookAuthor);
                             }
                             Book = StringTrimmer.TrimBook(Book);
-                            Book.PublishedDate = Book.PublishedDate.ToLocalTime();
+                            Book.PublishedDate = Book.PublishedDate.ToUniversalTime();
                             StringContent bookBody = new StringContent(JsonSerializer.Serialize(Book), Encoding.UTF8, "application/json");
                             response = await httpClient.PostAsync($"{Endpoints.Books}", bookBody);
 

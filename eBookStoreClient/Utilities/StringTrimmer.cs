@@ -35,7 +35,7 @@ namespace eStoreClient.Utilities
             if (book != null)
             {
                 book.Title = book.Title.Trim();
-                book.Notes = book.Notes.Trim();
+                book.Notes = !string.IsNullOrWhiteSpace(book.Notes) ? book.Notes.Trim() : "";
             }
             return book;
         }

@@ -129,10 +129,11 @@ namespace eBookStoreClient.Pages.Users
                     return Page();
                 }
 
-                User.HireDate = User.HireDate.ToLocalTime();
+                User.HireDate = User.HireDate.ToUniversalTime();
                 User = StringTrimmer.TrimUser(User);
                 httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                StringContent body = new StringContent(JsonSerializer.Serialize(User), Encoding.UTF8, "application/json");
+                string v = JsonSerializer.Serialize(User);
+                StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
                 response = await httpClient.PutAsync($"{Endpoints.Users}/{UserId}", body);
                 content = response.Content;
                 if (response.StatusCode == HttpStatusCode.OK)
