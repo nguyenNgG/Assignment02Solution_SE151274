@@ -17,6 +17,7 @@
                 <label asp-for="Author.AuthorId" class="control-label"></label>
                 <input asp-for="Author.AuthorId" class="form-control" />
                 <span asp-validation-for="Author.AuthorId" class="text-danger"></span>
+                <span class="text-danger">@Model.IdTakenMessage</span>
             </div>
             <div class="form-group">
                 <label asp-for="Author.LastName" class="control-label"></label>

@@ -29,6 +29,8 @@ namespace eBookStoreClient.Pages.Books
         public Cart Cart { get; set; }
         public List<Publisher> Publishers { get; set; }
 
+        public string IdTakenMessage { get; set; }
+
         public async Task<ActionResult> OnGetAsync()
         {
             try
@@ -72,6 +74,7 @@ namespace eBookStoreClient.Pages.Books
         {
             try
             {
+                IdTakenMessage = "";
                 HttpResponseMessage authResponse = await SessionHelper.Authorize(HttpContext.Session, sessionStorage);
                 if (authResponse.StatusCode == HttpStatusCode.OK)
                 {
@@ -80,18 +83,14 @@ namespace eBookStoreClient.Pages.Books
                     HttpContent content = response.Content;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true,
-                        };
-                        Publishers = JsonSerializer.Deserialize<Publishers>(await content.ReadAsStringAsync(), jsonSerializerOptions).List;
+                        Publishers = JsonSerializer.Deserialize<Publishers>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive).List;
                         ViewData["PublisherId"] = new SelectList(Publishers, "PublisherId", "PublisherName");
 
                         response = await httpClient.GetAsync($"{Endpoints.Cart}");
                         content = response.Content;
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
-                            Cart = JsonSerializer.Deserialize<Cart>(await content.ReadAsStringAsync(), jsonSerializerOptions);
+                            Cart = JsonSerializer.Deserialize<Cart>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
                             if (Cart.CartDetails.Count <= 0)
                             {
                                 return RedirectToPage(PageRoute.BooksPrepare);
@@ -115,6 +114,12 @@ namespace eBookStoreClient.Pages.Books
                             Book.PublishedDate = Book.PublishedDate.ToLocalTime();
                             StringContent bookBody = new StringContent(JsonSerializer.Serialize(Book), Encoding.UTF8, "application/json");
                             response = await httpClient.PostAsync($"{Endpoints.Books}", bookBody);
+
+                            if (response.StatusCode == HttpStatusCode.Conflict)
+                            {
+                                IdTakenMessage = "ID is taken.";
+                                return Page();
+                            }
 
                             Cart.CartDetails.Clear();
                             StringContent cartBody = new StringContent(JsonSerializer.Serialize(Cart), Encoding.UTF8, "application/json");

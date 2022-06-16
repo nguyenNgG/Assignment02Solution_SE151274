@@ -39,5 +39,18 @@ namespace eStoreClient.Utilities
             }
             return book;
         }
+
+        public static User TrimUser(User user)
+        {
+            if (user != null)
+            {
+                user.EmailAddress = user.EmailAddress.Trim();
+                user.FirstName = user.FirstName.Trim();
+                user.LastName = user.LastName.Trim();
+                user.MiddleName = user.MiddleName.Trim();
+                user.Source = user.Source.Trim();
+            }
+            return user;
+        }
     }
 }

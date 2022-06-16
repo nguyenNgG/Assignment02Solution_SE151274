@@ -20,6 +20,8 @@ namespace eBookStoreClient.Pages.Authors
             sessionStorage = _sessionStorage;
         }
 
+        public string IdTakenMessage { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             try
@@ -43,6 +45,7 @@ namespace eBookStoreClient.Pages.Authors
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+            IdTakenMessage = "";
             if (!ModelState.IsValid)
             {
                 SessionHelper.SaveToSession(HttpContext.Session, Author, "Author");
@@ -59,6 +62,11 @@ namespace eBookStoreClient.Pages.Authors
                 {
                     Author = JsonSerializer.Deserialize<Author>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
                     return RedirectToPage(PageRoute.Authors);
+                }
+                if (response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    IdTakenMessage = "ID is taken.";
+                    return await OnGetAsync();
                 }
             }
             catch
