@@ -61,7 +61,9 @@
             @Html.DisplayFor(model => model.Author.EmailAddress)
         </dd>
     </dl>
-    
+
+    <div class="text-danger">@Model.HasBookMessage</div>
+
     <form method="post">
         <input type="hidden" asp-for="Author.AuthorId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
