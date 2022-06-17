@@ -59,6 +59,17 @@ namespace eBookStoreClient.Pages.BookAuthors
                             AuthorId = a.AuthorId,
                             Name = $"{a.FirstName} {a.LastName}"
                         }).ToList();
+
+                        response = await httpClient.GetAsync($"{Endpoints.Cart}");
+                        content = response.Content;
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            Cart cart = JsonSerializer.Deserialize<Cart>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
+                            foreach (var detail in cart.CartDetails)
+                            {
+                                authors.RemoveAll(aut => aut.AuthorId == detail.Author.AuthorId);
+                            }
+                        }
                         ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
                         return Page();
                     }
@@ -96,13 +107,17 @@ namespace eBookStoreClient.Pages.BookAuthors
                             AuthorId = a.AuthorId,
                             Name = $"{a.FirstName} {a.LastName}"
                         }).ToList();
-                        ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
 
                         response = await httpClient.GetAsync($"{Endpoints.Cart}");
                         content = response.Content;
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
                             Cart cart = JsonSerializer.Deserialize<Cart>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
+                            foreach (var detail in cart.CartDetails)
+                            {
+                                authors.RemoveAll(aut => aut.AuthorId == detail.Author.AuthorId);
+                            }
+                            ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
 
                             bool isExisted = cart.CartDetails.Where(cartDetail => cartDetail.Author.AuthorId == Author.AuthorId).Any();
                             if (isExisted)

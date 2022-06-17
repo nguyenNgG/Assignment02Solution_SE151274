@@ -62,8 +62,19 @@ namespace eBookStoreClient.Pages.Books.EditAuthors
                             AuthorId = a.AuthorId,
                             Name = $"{a.FirstName} {a.LastName}"
                         }).ToList();
-                        ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
-                        return Page();
+                        httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
+                        response = await httpClient.GetAsync($"{Endpoints.BookAuthors}?$filter=BookId eq {BookId}");
+                        content = response.Content;
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            var bookAuthors = JsonSerializer.Deserialize<BookAuthors>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive).List;
+                            foreach (var baut in bookAuthors)
+                            {
+                                authors.RemoveAll(aut => aut.AuthorId == baut.AuthorId);
+                            }
+                            ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
+                            return Page();
+                        }
                     }
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
@@ -84,23 +95,51 @@ namespace eBookStoreClient.Pages.Books.EditAuthors
             BookAuthor.BookId = (int)TempData.Peek("BookId");
             TempData.Keep("BookId");
 
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-
             try
             {
-                string v = JsonSerializer.Serialize(BookAuthor);
-                StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
-                // to-do check conflict order
-                HttpResponseMessage response = await httpClient.PostAsync($"{Endpoints.BookAuthors}", body);
+                HttpClient httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
+                HttpResponseMessage response = await httpClient.GetAsync($"{Endpoints.Authors}");
                 HttpContent content = response.Content;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return RedirectToPage($"{PageRoute.BookAuthors}", new { id = BookId });
+                    var str = await content.ReadAsStringAsync();
+                    Authors = JsonSerializer.Deserialize<Authors>(str, SerializerOptions.CaseInsensitive).List;
+                    var authors = Authors.Select(a => new
+                    {
+                        AuthorId = a.AuthorId,
+                        Name = $"{a.FirstName} {a.LastName}"
+                    }).ToList();
+                    httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
+                    response = await httpClient.GetAsync($"{Endpoints.BookAuthors}?$filter=BookId eq {BookId}");
+                    content = response.Content;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var bookAuthors = JsonSerializer.Deserialize<BookAuthors>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive).List;
+                        foreach (var baut in bookAuthors)
+                        {
+                            authors.RemoveAll(aut => aut.AuthorId == baut.AuthorId);
+                        }
+                        ViewData["AuthorId"] = new SelectList(authors, "AuthorId", "Name");
+
+                        if (!ModelState.IsValid)
+                        {
+                            return Page();
+                        }
+
+                        httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
+                        string v = JsonSerializer.Serialize(BookAuthor);
+                        StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
+                        response = await httpClient.PostAsync($"{Endpoints.BookAuthors}", body);
+                        content = response.Content;
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            return RedirectToPage($"{PageRoute.BookAuthors}", new { id = BookId });
+                        }
+                    }
+                }
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return RedirectToPage(PageRoute.Books);
                 }
             }
             catch

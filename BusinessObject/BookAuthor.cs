@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject
 {
     public class BookAuthor
     {
         [Column("author_id")]
+        [Required]
         public int? AuthorId { get; set; }
 
         [ForeignKey("AuthorId")]
