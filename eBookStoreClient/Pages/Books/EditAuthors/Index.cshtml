@@ -1,0 +1,54 @@
+﻿@page
+@model eBookStoreClient.Pages.Books.EditAuthors.IndexModel
+
+@{
+    ViewData["Title"] = "Assigned Authors";
+}
+
+<h1>Assigned Authors</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].Author.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].AuthorOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookAuthors[0].RoyaltyPercentage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BookAuthors)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoyaltyPercentage)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-bookId="@item.BookId" asp-route-authorId="@item.AuthorId">Edit</a> |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

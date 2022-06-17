@@ -12,6 +12,9 @@
         // Authors
         public static string Authors = "/Authors/Index";
 
+        // BookAuthors
+        public static string BookAuthors = "/Books/EditAuthors/Index";
+
         // Publishers
         public static string Publishers = "/Publishers/Index";
 

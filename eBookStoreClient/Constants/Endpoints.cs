@@ -14,6 +14,7 @@
         public static string Users = $"{BaseOdataUri}/Users";
         public static string Books = $"{BaseOdataUri}/Books";
         public static string Authors = $"{BaseOdataUri}/Authors";
+        public static string BookAuthors = $"{BaseOdataUri}/BookAuthors";
         public static string Publishers = $"{BaseOdataUri}/Publishers";
         public static string Roles = $"{BaseOdataUri}/Roles";
 
