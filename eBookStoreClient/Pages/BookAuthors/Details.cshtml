@@ -22,6 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cart.CartDetails.First().AuthorOrder)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.CartDetails.First().RoyaltyPercentage)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,6 +40,9 @@
                 </td>
                 <td>
                     @cartDetail.AuthorOrder
+                </td>
+                <td>
+                    @cartDetail.RoyaltyPercentage
                 </td>
                 <td>
                     <a asp-page="/BookAuthors/Edit" asp-route-item-index="@cart.CartDetails.FindIndex(cd => cd == cartDetail)">Edit</a> | 

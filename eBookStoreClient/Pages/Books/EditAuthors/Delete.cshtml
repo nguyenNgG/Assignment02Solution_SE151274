@@ -1,0 +1,25 @@
+﻿@page
+@model eBookStoreClient.Pages.Books.EditAuthors.DeleteModel
+@{
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-text">
+            <p>Are you sure you want to unassign this author?</p>
+            <p>
+                <div class="font-weight-bold">@Model.BookAuthor.Author.FirstName @Model.BookAuthor.Author.LastName</div>
+                <div>AuthorOrder: @Model.BookAuthor.AuthorOrder</div>
+                <div>RoyaltyPercentage: @Model.BookAuthor.RoyaltyPercentage</div>
+            </p>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex flex-row">
+            <form method="post">
+                <input type="submit" value="Yes" class="btn btn-danger" />
+            </form>
+            <a asp-page="./Index" asp-route-id="@Model.BookAuthor.BookId" class="btn btn-outline-primary ml-2">No</a>
+        </div>
+    </div>
+</div>

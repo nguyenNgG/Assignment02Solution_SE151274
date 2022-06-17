@@ -9,6 +9,8 @@ namespace eBookStoreClient.Models
 
         [Required]
         public int AuthorOrder { get; set; }
+
+        [Required]
         public decimal RoyaltyPercentage { get; set; }
     }
 }

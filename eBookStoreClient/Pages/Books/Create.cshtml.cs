@@ -106,7 +106,8 @@ namespace eBookStoreClient.Pages.Books
                                 BookAuthor bookAuthor = new()
                                 {
                                     AuthorId = detail.Author.AuthorId,
-                                    RoyaltyPercentage = decimal.Divide((decimal)100.0, Cart.CartDetails.Count)
+                                    AuthorOrder = detail.AuthorOrder,
+                                    RoyaltyPercentage = detail.RoyaltyPercentage,
                                 };
                                 Book.BookAuthors.Add(bookAuthor);
                             }

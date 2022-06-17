@@ -86,7 +86,7 @@ namespace eBookStoreAPI.Controllers
         }
 
         [HttpDelete("{key}")]
-        public async Task<ActionResult<BookAuthor>> Delete(int keyBookId, int keyAuthorId)
+        public async Task<ActionResult<BookAuthor>> Delete([FromODataUri] int keyBookId, [FromODataUri] int keyAuthorId)
         {
             try
             {

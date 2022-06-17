@@ -27,6 +27,7 @@ namespace eBookStoreClient.Pages.BookAuthors
 
         public string AuthorMessage { get; set; }
         public string OrderMessage { get; set; }
+        public string RoyaltyMessage { get; set; }
 
         [BindProperty]
         public Author Author { get; set; }
@@ -109,16 +110,16 @@ namespace eBookStoreClient.Pages.BookAuthors
                                 AuthorMessage = "Author has already been assigned.";
                                 return Page();
                             }
-                            bool hasOrderConflict = cart.CartDetails.Where(cartDetail => cartDetail.AuthorOrder == CartDetail.AuthorOrder).Any();
-                            if (hasOrderConflict)
-                            {
-                                OrderMessage = "This order is taken.";
-                                return Page();
-                            }
                             bool invalidOrder = CartDetail.AuthorOrder < 0;
                             if (invalidOrder)
                             {
                                 OrderMessage = "Order can't be lower than 0.";
+                                return Page();
+                            }
+                            bool invalidRoyaltyPercentage = CartDetail.RoyaltyPercentage < 0;
+                            if (invalidRoyaltyPercentage)
+                            {
+                                RoyaltyMessage = "Royalty percentage can't be lower than 0.";
                                 return Page();
                             }
                             response = await httpClient.GetAsync($"{Endpoints.Authors}/{Author.AuthorId}");

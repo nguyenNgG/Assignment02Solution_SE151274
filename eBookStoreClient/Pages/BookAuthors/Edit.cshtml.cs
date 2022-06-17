@@ -4,7 +4,6 @@ using eBookStoreClient.Models;
 using eBookStoreClient.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -22,6 +21,7 @@ namespace eBookStoreClient.Pages.BookAuthors
         }
 
         public string OrderMessage { get; set; }
+        public string RoyaltyMessage { get; set; }
 
         [FromQuery(Name = "item-index")] public int ItemIndex { get; set; } = -1;
         [BindProperty]
@@ -87,13 +87,20 @@ namespace eBookStoreClient.Pages.BookAuthors
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
                             Author author = JsonSerializer.Deserialize<Author>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
-                            bool hasOrderConflict = cart.CartDetails.Where(cartDetail => cartDetail.AuthorOrder == CartDetail.AuthorOrder).Any();
-                            if (hasOrderConflict)
+                            bool invalidOrder = CartDetail.AuthorOrder < 0;
+                            if (invalidOrder)
                             {
-                                OrderMessage = "This order is taken.";
+                                OrderMessage = "Order can't be lower than 0.";
+                                return Page();
+                            }
+                            bool invalidRoyaltyPercentage = CartDetail.RoyaltyPercentage < 0;
+                            if (invalidRoyaltyPercentage)
+                            {
+                                RoyaltyMessage = "Royalty percentage can't be lower than 0.";
                                 return Page();
                             }
                             cart.CartDetails[ItemIndex].AuthorOrder = CartDetail.AuthorOrder;
+                            cart.CartDetails[ItemIndex].RoyaltyPercentage = CartDetail.RoyaltyPercentage;
                             StringContent body = new StringContent(JsonSerializer.Serialize(cart), Encoding.UTF8, "application/json");
                             response = await httpClient.PostAsync(Endpoints.Cart, body);
                             if (response.StatusCode == HttpStatusCode.OK)

@@ -28,6 +28,9 @@ namespace eBookStoreClient.Pages.Books.EditAuthors
         [TempData]
         public int AuthorId { get; set; }
 
+        public string OrderMessage { get; set; }
+        public string RoyaltyMessage { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? bookId, int? authorId)
         {
             try
@@ -58,6 +61,7 @@ namespace eBookStoreClient.Pages.Books.EditAuthors
                         return RedirectToPage($"{PageRoute.BookAuthors}", new { id = BookId });
                     }
                 }
+                return RedirectToPage($"{PageRoute.BookAuthors}", new { id = BookId });
             }
             catch
             {
@@ -85,7 +89,18 @@ namespace eBookStoreClient.Pages.Books.EditAuthors
             {
                 string v = JsonSerializer.Serialize(BookAuthor);
                 StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
-                // to-do check conflict order
+                bool invalidOrder = BookAuthor.AuthorOrder < 0;
+                if (invalidOrder)
+                {
+                    OrderMessage = "Order can't be lower than 0.";
+                    return Page();
+                }
+                bool invalidRoyaltyPercentage = BookAuthor.RoyaltyPercentage < 0;
+                if (invalidRoyaltyPercentage)
+                {
+                    RoyaltyMessage = "Royalty percentage can't be lower than 0.";
+                    return Page();
+                }
                 HttpResponseMessage response = await httpClient.PutAsync($"{Endpoints.BookAuthors}(AuthorId={BookAuthor.AuthorId},BookId={BookAuthor.BookId})", body);
                 HttpContent content = response.Content;
                 if (response.StatusCode == HttpStatusCode.OK)
