@@ -25,7 +25,7 @@ namespace eBookStoreClient.Pages.Users
         }
 
         [BindProperty]
-        public new User User { get; set; }
+        public User UserObject { get; set; }
 
         [TempData]
         public int UserId { get; set; }
@@ -79,7 +79,7 @@ namespace eBookStoreClient.Pages.Users
                             content = response.Content;
                             if (response.StatusCode == HttpStatusCode.OK)
                             {
-                                User = JsonSerializer.Deserialize<User>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
+                                UserObject = JsonSerializer.Deserialize<User>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
                                 return Page();
                             }
                             if (response.StatusCode == HttpStatusCode.NotFound)
@@ -100,7 +100,7 @@ namespace eBookStoreClient.Pages.Users
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            User.UserId = (int)TempData.Peek("UserId");
+            UserObject.UserId = (int)TempData.Peek("UserId");
             TempData.Keep("UserId");
 
             try
@@ -129,21 +129,21 @@ namespace eBookStoreClient.Pages.Users
                     return Page();
                 }
 
-                User.HireDate = User.HireDate.ToUniversalTime();
-                User = StringTrimmer.TrimUser(User);
+                UserObject.HireDate = UserObject.HireDate.ToUniversalTime();
+                UserObject = StringTrimmer.TrimUser(UserObject);
                 httpClient = SessionHelper.GetHttpClient(HttpContext.Session, sessionStorage);
-                string v = JsonSerializer.Serialize(User);
+                string v = JsonSerializer.Serialize(UserObject);
                 StringContent body = new StringContent(v, Encoding.UTF8, "application/json");
                 response = await httpClient.PutAsync($"{Endpoints.Users}/{UserId}", body);
                 content = response.Content;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    User = JsonSerializer.Deserialize<User>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
+                    UserObject = JsonSerializer.Deserialize<User>(await content.ReadAsStringAsync(), SerializerOptions.CaseInsensitive);
 
                     HttpResponseMessage authResponse = await SessionHelper.Current(HttpContext.Session, sessionStorage);
                     content = authResponse.Content;
                     int _memberId = int.Parse(await content.ReadAsStringAsync());
-                    if (_memberId == User.UserId)
+                    if (_memberId == UserObject.UserId)
                     {
                         return RedirectToPage(PageRoute.Profile, new { id = _memberId });
                     }

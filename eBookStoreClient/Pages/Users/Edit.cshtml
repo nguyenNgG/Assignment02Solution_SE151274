@@ -13,51 +13,51 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="User.UserId" />
+            <input type="hidden" asp-for="UserObject.UserId" />
             <div class="form-group">
-                <label asp-for="User.EmailAddress" class="control-label"></label>
-                <input asp-for="User.EmailAddress" class="form-control" />
-                <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
+                <label asp-for="UserObject.EmailAddress" class="control-label"></label>
+                <input asp-for="UserObject.EmailAddress" class="form-control" />
+                <span asp-validation-for="UserObject.EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.Password" class="control-label"></label>
-                <input asp-for="User.Password" class="form-control" />
-                <span asp-validation-for="User.Password" class="text-danger"></span>
+                <label asp-for="UserObject.Password" class="control-label"></label>
+                <input asp-for="UserObject.Password" class="form-control" type="password" value="@Model.UserObject.Password" />
+                <span asp-validation-for="UserObject.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.Source" class="control-label"></label>
-                <input asp-for="User.Source" class="form-control" />
-                <span asp-validation-for="User.Source" class="text-danger"></span>
+                <label asp-for="UserObject.Source" class="control-label"></label>
+                <input asp-for="UserObject.Source" class="form-control" />
+                <span asp-validation-for="UserObject.Source" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.FirstName" class="control-label"></label>
-                <input asp-for="User.FirstName" class="form-control" />
-                <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                <label asp-for="UserObject.FirstName" class="control-label"></label>
+                <input asp-for="UserObject.FirstName" class="form-control" />
+                <span asp-validation-for="UserObject.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.MiddleName" class="control-label"></label>
-                <input asp-for="User.MiddleName" class="form-control" />
-                <span asp-validation-for="User.MiddleName" class="text-danger"></span>
+                <label asp-for="UserObject.MiddleName" class="control-label"></label>
+                <input asp-for="UserObject.MiddleName" class="form-control" />
+                <span asp-validation-for="UserObject.MiddleName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.LastName" class="control-label"></label>
-                <input asp-for="User.LastName" class="form-control" />
-                <span asp-validation-for="User.LastName" class="text-danger"></span>
+                <label asp-for="UserObject.LastName" class="control-label"></label>
+                <input asp-for="UserObject.LastName" class="form-control" />
+                <span asp-validation-for="UserObject.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.RoleId" class="control-label"></label>
-                <select asp-for="User.RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
-                <span asp-validation-for="User.RoleId" class="text-danger"></span>
+                <label asp-for="UserObject.RoleId" class="control-label"></label>
+                <select asp-for="UserObject.RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                <span asp-validation-for="UserObject.RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.PublisherId" class="control-label"></label>
-                <select asp-for="User.PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
-                <span asp-validation-for="User.PublisherId" class="text-danger"></span>
+                <label asp-for="UserObject.PublisherId" class="control-label"></label>
+                <select asp-for="UserObject.PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
+                <span asp-validation-for="UserObject.PublisherId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.HireDate" class="control-label"></label>
-                <input asp-for="User.HireDate" class="form-control" />
-                <span asp-validation-for="User.HireDate" class="text-danger"></span>
+                <label asp-for="UserObject.HireDate" class="control-label"></label>
+                <input asp-for="UserObject.HireDate" class="form-control" />
+                <span asp-validation-for="UserObject.HireDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -67,7 +67,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Details" asp-route-id="@Model.UserObject.UserId">Back</a>
 </div>
 
 @section Scripts {
