@@ -37,7 +37,9 @@
             @Html.DisplayFor(model => model.Publisher.Country)
         </dd>
     </dl>
-    
+
+    <div class="text-danger">@Model.HasBookMessage</div>
+
     <form method="post">
         <input type="hidden" asp-for="Publisher.PublisherId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
